@@ -1,5 +1,7 @@
 package com.bernhard.jobapp.review;
 
+import io.swagger.v3.oas.annotations.Operation;
+import io.swagger.v3.oas.annotations.tags.Tag;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -17,16 +19,19 @@ import java.util.List;
 @RestController
 @RequiredArgsConstructor
 @RequestMapping("/companies/{companyId}")
+@Tag(name = "Review", description = "Manages Review")
 public class ReviewController {
 
     private final ReviewService reviewService;
 
     @GetMapping("/reviews")
+    @Operation(summary = "Get list of review by company id", operationId = "get-review-by-company-id")
     public ResponseEntity<List<Review>> getAllReviews(@PathVariable Long companyId) {
         return new ResponseEntity<>(reviewService.getAllReviews(companyId), HttpStatus.OK);
     }
 
     @PostMapping("/reviews")
+    @Operation(summary = "Create a review by company id", operationId = "create-review-by-company-id")
     public ResponseEntity<String> addReview (@PathVariable Long companyId, @RequestBody Review review) {
         boolean isReviewSaved = reviewService.addReview(companyId, review);
         if (isReviewSaved) {
@@ -36,11 +41,13 @@ public class ReviewController {
     }
 
     @GetMapping("/reviews/{reviewId}")
+    @Operation(summary = "Get review by company id and review id", operationId = "get-one-review-by-company-id")
     public ResponseEntity<Review> getReview(@PathVariable Long companyId, @PathVariable Long reviewId) {
         return new ResponseEntity<>(reviewService.getReview(companyId, reviewId), HttpStatus.OK);
     }
 
     @PutMapping("/reviews/{reviewId}")
+    @Operation(summary = "Update review by company id and review id", operationId = "update-one-review-by-company-id")
     public ResponseEntity<String> updateReview(
             @PathVariable Long companyId,
             @PathVariable Long reviewId,
@@ -54,6 +61,7 @@ public class ReviewController {
     }
 
     @DeleteMapping("/reviews/{reviewId}")
+    @Operation(summary = "Delete review by company id and review id", operationId = "delete-one-review-by-company-id")
     public ResponseEntity<String> deleteReview(@PathVariable Long companyId, @PathVariable Long reviewId) {
         boolean isReviewDeleted = reviewService.deleteReview(companyId, reviewId);
         if (isReviewDeleted) {

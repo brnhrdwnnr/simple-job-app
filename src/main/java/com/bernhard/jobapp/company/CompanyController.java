@@ -1,5 +1,7 @@
 package com.bernhard.jobapp.company;
 
+import io.swagger.v3.oas.annotations.Operation;
+import io.swagger.v3.oas.annotations.tags.Tag;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -17,17 +19,20 @@ import java.util.List;
 @RestController
 @RequiredArgsConstructor
 @RequestMapping("/companies")
+@Tag(name = "Company", description = "Manages Company")
 public class CompanyController {
 
     private final CompanyService companyService;
 
     @GetMapping
+    @Operation(summary = "Get list of company", operationId = "get-company")
     public ResponseEntity<List<Company>> getAllCompanies() {
         return ResponseEntity.ok(companyService.getAllCompanies());
     }
 
 
     @PutMapping("/{id}")
+    @Operation(summary = "Update company by id", operationId = "update-company")
     public ResponseEntity<String> updateCompany(@PathVariable Long id, @RequestBody Company company) {
         boolean updated = companyService.updateCompany(id, company);
         if (updated) {
@@ -37,12 +42,14 @@ public class CompanyController {
     }
 
     @PostMapping
+    @Operation(summary = "Create a company", operationId = "create-company")
     public ResponseEntity<String> addCompany(@RequestBody Company company) {
         companyService.createCompany(company);
         return new ResponseEntity<>("Company added successfully", HttpStatus.CREATED) ;
     }
 
     @DeleteMapping("/{id}")
+    @Operation(summary = "Delete company by id", operationId = "delete-company")
     public ResponseEntity<String> deleteCompany(@PathVariable Long id) {
         boolean isDeleted = companyService.deleteCompanyById(id);
         if (isDeleted) {
@@ -52,6 +59,7 @@ public class CompanyController {
     }
 
     @GetMapping("/{id}")
+    @Operation(summary = "Get job by id", operationId = "get-one-job")
     public ResponseEntity<Company> getCompanyById(@PathVariable Long id) {
         Company company = companyService.getCompanyById(id);
         if (company != null) {
